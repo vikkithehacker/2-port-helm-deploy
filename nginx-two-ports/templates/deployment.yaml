@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "nginx-two-ports.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "nginx-two-ports.name" . }}
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: {{ .Values.nginxPorts.httpPort }}
+            - containerPort: {{ .Values.nginxPorts.httpsPort }}
